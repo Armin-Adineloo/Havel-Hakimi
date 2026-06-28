@@ -4,10 +4,10 @@ from image_cv import image
 
 filename = input("Enter file name: ")
 if filename.endswith(".jpg") or filename.endswith(".jpeg") or filename.endswith(".png"):
-    degrees = image(filename)
+    degrees = readfile(file.filename)
     degrees_copy = degrees.copy()
 else:
-    degrees = readfile(filename)
+    degrees = readfile(file.filename)
     degrees_copy = degrees.copy()
 
 if havel_hakimi(degrees_copy):
