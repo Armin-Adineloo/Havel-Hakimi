@@ -2,30 +2,20 @@ from flask import Flask, render_template, request
 from input_file import readfile
 from Havel_Hakimi import havel_hakimi
 
-app = Flask(__name__)
 
+app = Flask(__name__)
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
-
 @app.route("/upload", methods=["POST"])
 def upload():
-
-    # گرفتن فایل از فرم
     file = request.files["graph"]
-
-    # ذخیره فایل
     file.save(file.filename)
-
-    # خواندن درجات گراف
     degrees = readfile(file.filename)
-
-    # یک کپی برای الگوریتم
     degrees_copy = degrees.copy()
 
-    # اجرای الگوریتم
     if havel_hakimi(degrees_copy):
         result = "Graphic"
     else:
@@ -40,7 +30,6 @@ def upload():
     <br>
     <a href="/">Back</a>
     """
-
 
 if __name__ == "__main__":
     app.run(debug=True)
