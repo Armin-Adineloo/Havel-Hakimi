@@ -1,19 +1,45 @@
 from flask import Flask, render_template, request
 from input_file import readfile
 from Havel_Hakimi import havel_hakimi
-
+from image import image
+import os
 
 app = Flask(__name__)
+
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
+
 @app.route("/upload", methods=["POST"])
 def upload():
+
+    # -----------------------------
+    # گرفتن فایل
+    # -----------------------------
     file = request.files["graph"]
+
+    # ذخیره فایل
     file.save(file.filename)
-    degrees = readfile(file.filename)
+
+    # پسوند فایل
+    extension = os.path.splitext(file.filename)[1].lower()
+
+    # -----------------------------
+    # تشخیص نوع فایل
+    # -----------------------------
+    if extension in [".png", ".jpg", ".jpeg", ".bmp"]:
+
+        degrees = image(file.filename)
+
+    else:
+
+        degrees = readfile(file.filename)
+
+    # -----------------------------
+    # اجرای Havel Hakimi
+    # -----------------------------
     degrees_copy = degrees.copy()
 
     if havel_hakimi(degrees_copy):
@@ -21,15 +47,25 @@ def upload():
     else:
         result = "Not Graphic"
 
+    # -----------------------------
+    # نمایش نتیجه
+    # -----------------------------
     return f"""
     <h2>File : {file.filename}</h2>
+
     <h3>Degree Sequence :</h3>
+
     <p>{degrees}</p>
+
     <h3>Result :</h3>
+
     <p>{result}</p>
+
     <br>
+
     <a href="/">Back</a>
     """
+
 
 if __name__ == "__main__":
     app.run(debug=True)
