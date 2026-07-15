@@ -43,6 +43,10 @@ def sum_row(matrix):
     for i in range(len(matrix)):
         sum_row = 0
         for j in range(len(matrix[0])):
+            if matrix[i][j] == 0:
+                continue
+            else:
+                matrix[i][j] /= matrix[i][j]
             sum_row += int(matrix[i][j])
         deg.append(sum_row)
     return deg
